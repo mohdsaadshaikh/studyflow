@@ -1,26 +1,1181 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  /* Code and aligned worked solutions only; every label uses the heading face */
+  --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono", monospace;
+  --font-heading: var(--font-space-grotesk), var(--font-inter), system-ui, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-edge: var(--edge);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-lavender: var(--lavender);
+  --color-cream-deep: var(--cream-deep);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /* Radius scale from the original design: lg = --radius, md/sm step down by 0.25rem */
+  --radius-sm: max(0px, calc(var(--radius) - 0.5rem));
+  --radius-md: max(0px, calc(var(--radius) - 0.25rem));
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* Wispr Flow-inspired palette: buttery cream, ink, forest green, lavender CTA */
+  --background: hsl(58 76% 94%);
+  --foreground: hsl(60 5% 9%);
+
+  --card: hsl(58 78% 96%);
+  --card-foreground: hsl(60 5% 9%);
+
+  --popover: hsl(58 78% 96%);
+  --popover-foreground: hsl(60 5% 9%);
+
+  --primary: hsl(170 82% 18%);
+  --primary-foreground: hsl(58 76% 94%);
+
+  --secondary: hsl(58 42% 88%);
+  --secondary-foreground: hsl(60 5% 9%);
+
+  --muted: hsl(58 35% 90%);
+  --muted-foreground: hsl(72 8% 42%);
+
+  --accent: hsl(278 100% 90%);
+  --accent-foreground: hsl(60 5% 9%);
+
+  --destructive: hsl(0 65% 45%);
+  --destructive-foreground: hsl(58 76% 94%);
+
+  /* Outline for forest-filled blocks: same hue, deeper, so the edge stays visible without ink */
+  --primary-edge: hsl(170 90% 9%);
+  /* Outline for every block: deep forest ink, tuned to the green rather than pure black */
+  --edge: hsl(168 38% 20%);
+
+  --success: hsl(170 82% 18%);
+  --success-foreground: hsl(58 76% 94%);
+
+  --border: hsl(168 38% 20%);
+  --input: hsl(168 38% 20%);
+  --ring: hsl(170 82% 18%);
+
+  --radius: 0.375rem;
+
+  /* Motion tokens (Emil Kowalski curves); UI motion stays under 300ms */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --hairline: hsl(60 5% 9% / 0.16);
+  --lavender: hsl(278 100% 90%);
+  --cream-deep: hsl(58 55% 89%);
+  --soft-shadow: none;
+
+  --chart-1: hsl(170 82% 18%);
+  --chart-2: hsl(278 70% 70%);
+  --chart-3: hsl(72 8% 42%);
+  --chart-4: hsl(58 55% 70%);
+  --chart-5: hsl(60 5% 9%);
+
+  --sidebar: hsl(0 0% 98%);
+  --sidebar-foreground: hsl(240 5.3% 26.1%);
+  --sidebar-primary: hsl(240 5.9% 10%);
+  --sidebar-primary-foreground: hsl(0 0% 98%);
+  --sidebar-accent: hsl(240 4.8% 95.9%);
+  --sidebar-accent-foreground: hsl(240 5.9% 10%);
+  --sidebar-border: hsl(220 13% 91%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
+
+.dark {
+  --background: hsl(222.2 84% 4.9%);
+  --foreground: hsl(210 40% 98%);
+
+  --card: hsl(222.2 84% 4.9%);
+  --card-foreground: hsl(210 40% 98%);
+
+  --popover: hsl(222.2 84% 4.9%);
+  --popover-foreground: hsl(210 40% 98%);
+
+  --primary: hsl(210 40% 98%);
+  --primary-foreground: hsl(222.2 47.4% 11.2%);
+
+  --secondary: hsl(217.2 32.6% 17.5%);
+  --secondary-foreground: hsl(210 40% 98%);
+
+  --muted: hsl(217.2 32.6% 17.5%);
+  --muted-foreground: hsl(215 20.2% 65.1%);
+
+  --accent: hsl(217.2 32.6% 17.5%);
+  --accent-foreground: hsl(210 40% 98%);
+
+  --destructive: hsl(0 62.8% 30.6%);
+  --destructive-foreground: hsl(210 40% 98%);
+
+  --border: hsl(217.2 32.6% 17.5%);
+  --input: hsl(217.2 32.6% 17.5%);
+  --ring: hsl(212.7 26.8% 83.9%);
+
+  --sidebar: hsl(240 5.9% 10%);
+  --sidebar-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-primary: hsl(224.3 76.3% 48%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(240 3.7% 15.9%);
+  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-border: hsl(240 3.7% 15.9%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  ::selection {
+    background: var(--lavender);
+    color: var(--foreground);
+  }
+
+  input,
+  textarea {
+    caret-color: var(--primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "liga" 1, "kern" 1;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
   }
 }
 
-body {
+/*
+  Ink-block system. Every surface is a flat block outlined in 2px ink; fill says what it is:
+    paper  (--background)  inner rows, inputs, idle options
+    card   (--card)        containers: panels, lists, notes
+    accent (lavender)      the primary action on a screen
+    forest (--primary)     selected, done, correct, the secondary strong action
+    ink    (--foreground)  current tab/segment
+  Text inside blocks pairs a small mono label with a Space Grotesk line. Interactive
+  blocks lift 1px on hover and press 1px on active. No shadows anywhere.
+*/
+@layer components {
+  .ink-block,
+  .wf-panel {
+    border: 2px solid var(--edge);
+    border-radius: var(--radius);
+    background: var(--card);
+    box-shadow: none;
+  }
+
+  .ink-interactive,
+  .wf-button,
+  .wf-button-dark {
+    border: 2px solid var(--edge);
+    border-radius: var(--radius);
+    box-shadow: none;
+    cursor: pointer;
+    transition:
+      transform 160ms var(--ease-out),
+      background-color 160ms ease,
+      color 160ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .ink-interactive:hover:not(:disabled),
+    .wf-button:hover,
+    .wf-button-dark:hover {
+      transform: translateY(-2px);
+    }
+    /* Trailing arrows travel a little further than the block they sit in */
+    .ink-arrow-host:hover > svg:last-child {
+      transform: translateX(4px);
+    }
+  }
+
+  .ink-interactive:active:not(:disabled),
+  .wf-button:active,
+  .wf-button-dark:active {
+    transform: translateY(1px) scale(0.985);
+    transition-duration: 80ms;
+  }
+
+  /* Disabled: a flat muted block (no opacity fade), outline kept so it still reads as a control.
+     .ink-locked opts out for blocks that are disabled only because they now show a result
+     (answered options keep their forest/danger fill). */
+  .ink-interactive:disabled {
+    cursor: not-allowed;
+  }
+  .ink-interactive:disabled:not(.ink-locked) {
+    background: var(--muted);
+    border-color: var(--edge);
+    color: var(--muted-foreground);
+  }
+  .ink-interactive.ink-locked:disabled {
+    cursor: default;
+  }
+
+  .ink-paper {
+    background: var(--background);
+    color: var(--foreground);
+  }
+  .ink-paper:is(a, button):hover:not(:disabled) {
+    background: var(--secondary);
+  }
+
+  .ink-card {
+    background: var(--card);
+    color: var(--foreground);
+  }
+  .ink-card:is(a, button):hover:not(:disabled) {
+    background: var(--secondary);
+  }
+
+  .ink-accent,
+  .wf-button {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  .ink-accent:is(a, button):hover:not(:disabled),
+  .wf-button:hover {
+    background: color-mix(in srgb, var(--accent) 80%, var(--background));
+  }
+
+  /* Forest fills take a deep-green outline; pure ink on green reads harsh */
+  .ink-forest,
+  .wf-button-dark {
+    background: var(--primary);
+    border-color: var(--primary-edge);
+    color: var(--primary-foreground);
+  }
+  .ink-forest:is(a, button):hover:not(:disabled),
+  .wf-button-dark:hover {
+    background: color-mix(in srgb, var(--primary) 88%, var(--foreground));
+  }
+
+  .ink-danger {
+    background: color-mix(in srgb, var(--destructive) 12%, var(--background));
+    border-color: var(--destructive);
+    color: var(--destructive);
+  }
+
+  /* Small mono caption that sits above a block's main line */
+  .ink-label {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Segmented control: one ink-outlined strip, current item filled with ink */
+  .ink-segmented {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border: 2px solid var(--edge);
+    border-radius: var(--radius);
+    background: var(--card);
+  }
+  .ink-segment {
+    position: relative;
+    isolation: isolate;
+    border-radius: calc(var(--radius) - 0.125rem);
+    padding: 0.5rem 0.75rem;
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: background-color 160ms ease, color 160ms ease;
+  }
+  .ink-segment:hover {
+    background: var(--secondary);
+  }
+  /* Current segment: a forest pill that grows in place each time the selection lands */
+  .ink-segment[aria-current="page"],
+  .ink-segment[aria-pressed="true"],
+  .ink-segment[aria-selected="true"] {
+    background: transparent;
+    color: var(--primary-foreground);
+  }
+  .ink-segment[aria-current="page"]::before,
+  .ink-segment[aria-pressed="true"]::before,
+  .ink-segment[aria-selected="true"]::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: var(--primary);
+    animation: ink-segment-in 260ms var(--ease-out) backwards;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ink-segment::before {
+      animation-name: ink-fade !important;
+    }
+  }
+
+  /* Tick box used for "done" everywhere */
+  .ink-tick {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid var(--edge);
+    border-radius: calc(var(--radius) - 0.125rem);
+    background: var(--background);
+    color: var(--primary-foreground);
+    transition: background-color 200ms var(--ease-out);
+  }
+  .ink-tick[aria-pressed="true"] {
+    background: var(--primary);
+    border-color: var(--primary-edge);
+  }
+
+  /* Text field */
+  .ink-input {
+    width: 100%;
+    border: 2px solid var(--edge);
+    border-radius: var(--radius);
+    background: var(--background);
+    padding: 0.75rem 1rem;
+  }
+  .ink-input:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ink-interactive,
+    .wf-button,
+    .wf-button-dark,
+    .ink-tick,
+    .ink-segment {
+      transition: none;
+    }
+    .ink-interactive:hover:not(:disabled),
+    .ink-interactive:active:not(:disabled),
+    .wf-button:hover,
+    .wf-button:active,
+    .wf-button-dark:hover,
+    .wf-button-dark:active {
+      transform: none;
+    }
+  }
+}
+
+/*
+  Motion primitives. Each has one job; all respect reduced motion (opacity/colour kept,
+  movement dropped).
+*/
+@layer components {
+  /* Content swap (mode change, route content): prevents a jarring teleport */
+  .motion-enter {
+    animation: ink-enter 220ms var(--ease-out) backwards;
+  }
+
+  /* Wrong answer: a short horizontal shake, once */
+  .motion-shake {
+    animation: ink-shake 280ms var(--ease-out);
+  }
+
+  /* Check mark appearing inside a tick box or correct option */
+  .motion-pop {
+    animation: ink-pop 200ms var(--ease-out) backwards;
+  }
+
+  /* Last minute of a timed test */
+  .motion-urgent {
+    animation: ink-urgent 900ms ease-in-out infinite alternate;
+  }
+
+  /* Rare moments (results): children rise in sequence; set --i on each child */
+  .motion-stagger > * {
+    animation: ink-enter 320ms var(--ease-out) backwards;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+
+  /* Progress fill: slides rather than resizing, so it never triggers layout */
+  .progress-fill {
+    transition: transform 240ms var(--ease-out);
+  }
+  .progress-fill[data-reveal] {
+    transition-duration: 700ms;
+    transition-delay: 150ms;
+    @starting-style {
+      transform: translateX(-100%);
+    }
+  }
+
+  /* Flashcard: two faces on one card that turns over */
+  .flip-scene {
+    perspective: 1400px;
+  }
+  .flip-card {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 300ms var(--ease-in-out);
+  }
+  .flip-card[data-flipped="true"] {
+    transform: rotateY(180deg);
+  }
+  /* Both faces share one grid cell, so the card is as tall as its longer face */
+  .flip-face {
+    grid-area: 1 / 1;
+    backface-visibility: hidden;
+  }
+  .flip-face-back {
+    transform: rotateY(180deg);
+  }
+
+  /* Accordion (hub subjects): new content fades up on open */
+  details[open] > .details-body {
+    animation: ink-enter 220ms var(--ease-out) backwards;
+  }
+
+  /* Overlay behind the mobile drawer */
+  .motion-fade {
+    animation: ink-fade 200ms var(--ease-out) backwards;
+  }
+
+  /* List rows rising in on first paint; set --i per row (capped so long lists don't drag) */
+  .motion-row {
+    animation: ink-enter 260ms var(--ease-out) backwards;
+    animation-delay: calc(min(var(--i, 0), 12) * 28ms + 120ms);
+  }
+
+  /* Check mark draws itself */
+  .motion-draw path,
+  .motion-draw polyline {
+    stroke-dasharray: 28;
+    animation: ink-draw 300ms 60ms var(--ease-out) backwards;
+  }
+
+  /* Tick box: squash then settle, only when the user ticks (class added on click) */
+  .motion-tick {
+    animation: ink-tick 320ms var(--ease-out);
+  }
+
+  /* Row feedback after ticking: a lavender wash that fades out */
+  .motion-flash {
+    animation: ink-flash 700ms var(--ease-out);
+  }
+
+  /* Chapter finished: a light band sweeps across the header once */
+  .motion-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+  .motion-sweep::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 20%, color-mix(in srgb, var(--accent) 85%, transparent) 50%, transparent 80%);
+    transform: translateX(-100%);
+    animation: ink-sweep 900ms 150ms var(--ease-in-out) forwards;
+    pointer-events: none;
+  }
+
+  /* Primary action arrow: two nudges after load to say "start here" */
+  .motion-nudge svg:last-child {
+    animation: ink-nudge 700ms 900ms var(--ease-in-out) 2;
+  }
+
+  /* Logo: the three bars bounce like a level meter when you point at it */
+  .logo-bar {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .logo:hover .logo-bar {
+      animation: ink-bar 560ms var(--ease-out);
+    }
+    .logo:hover .logo-bar-2 {
+      animation-delay: 60ms;
+    }
+    .logo:hover .logo-bar-3 {
+      animation-delay: 120ms;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .logo:hover .logo-bar {
+      animation: none;
+    }
+  }
+
+  /* Answer options entering one after another */
+  .motion-options > * {
+    animation: ink-enter 240ms var(--ease-out) backwards;
+    animation-delay: calc(var(--i, 0) * 45ms + 80ms);
+  }
+
+  /* A wrong answer shakes even though it also entered with the list */
+  .motion-options > .motion-shake {
+    animation: ink-shake 360ms var(--ease-out);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-options > .motion-shake {
+      animation: none;
+    }
+    .motion-row,
+    .motion-options > * {
+      animation-name: ink-fade;
+    }
+    .motion-draw path,
+    .motion-draw polyline,
+    .motion-tick,
+    .motion-sweep::after,
+    .motion-nudge svg:last-child {
+      animation: none;
+    }
+    .motion-sweep::after {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-enter,
+    .motion-stagger > *,
+    details[open] > .details-body {
+      animation-name: ink-fade;
+    }
+    .motion-shake,
+    .motion-urgent {
+      animation: none;
+    }
+    .motion-pop {
+      animation-name: ink-fade;
+    }
+    .flip-card {
+      transition: none;
+    }
+    .flip-card[data-flipped="true"] {
+      transform: none;
+    }
+    .flip-face-back {
+      transform: none;
+      opacity: 0;
+    }
+    .flip-card[data-flipped="true"] .flip-face-back {
+      opacity: 1;
+    }
+    .flip-card[data-flipped="true"] .flip-face-front {
+      opacity: 0;
+    }
+    .progress-fill,
+    .progress-fill[data-reveal] {
+      transition-duration: 0ms;
+      transition-delay: 0ms;
+    }
+  }
+}
+
+@keyframes ink-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes ink-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes ink-shake {
+  20% {
+    transform: translateX(-6px);
+  }
+  45% {
+    transform: translateX(6px);
+  }
+  70% {
+    transform: translateX(-2px);
+  }
+  90% {
+    transform: translateX(1px);
+  }
+}
+
+@keyframes ink-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@keyframes ink-urgent {
+  to {
+    opacity: 0.55;
+  }
+}
+
+@keyframes ink-bar {
+  35% {
+    transform: scaleY(0.55);
+  }
+  70% {
+    transform: scaleY(1.12);
+  }
+}
+
+@keyframes ink-draw {
+  from {
+    stroke-dashoffset: 28;
+  }
+}
+
+@keyframes ink-tick {
+  35% {
+    transform: scale(0.82);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes ink-flash {
+  from {
+    background-color: color-mix(in srgb, var(--accent) 70%, transparent);
+  }
+}
+
+@keyframes ink-sweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes ink-nudge {
+  50% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes ink-segment-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7, 0.85);
+  }
+}
+
+@layer utilities {
+  /* Globally remove drop shadows */
+  .shadow,
+  .shadow-xs,
+  .shadow-sm,
+  .shadow-md,
+  .shadow-lg,
+  .shadow-xl,
+  .shadow-2xl,
+  .shadow-inner {
+    box-shadow: none !important;
+  }
+
+  /* Animated, button-less scrollbars (WebKit + Firefox) */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--foreground) 25%, transparent) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--foreground) 18%, transparent);
+    border-radius: 999px;
+    transition:
+      background-color 200ms ease,
+      transform 200ms ease;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, var(--primary) 70%, transparent);
+  }
+  /* Remove the up/down arrow buttons */
+  *::-webkit-scrollbar-button,
+  *::-webkit-scrollbar-button:single-button,
+  *::-webkit-scrollbar-button:start:decrement,
+  *::-webkit-scrollbar-button:end:increment {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+
+/*
+  Route motion (React <ViewTransition>):
+  - nav-forward / nav-back: content slides 60px in the direction of travel while fading
+  - morph: a topic's row title grows into the lesson heading (same name on both pages)
+  - the study sidebar stays put as the spatial anchor
+*/
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-old(.nav-forward) {
+  --slide-offset: -60px;
+  animation:
+    150ms ease-in both ink-vt-fade reverse,
+    380ms var(--ease-in-out) both ink-vt-slide reverse;
+}
+::view-transition-new(.nav-forward) {
+  --slide-offset: 60px;
+  animation:
+    210ms var(--ease-out) 120ms both ink-vt-fade,
+    380ms var(--ease-in-out) both ink-vt-slide;
+}
+::view-transition-old(.nav-back) {
+  --slide-offset: 60px;
+  animation:
+    150ms ease-in both ink-vt-fade reverse,
+    380ms var(--ease-in-out) both ink-vt-slide reverse;
+}
+::view-transition-new(.nav-back) {
+  --slide-offset: -60px;
+  animation:
+    210ms var(--ease-out) 120ms both ink-vt-fade,
+    380ms var(--ease-in-out) both ink-vt-slide;
+}
+
+::view-transition-group(.morph) {
+  animation-duration: 420ms;
+  animation-timing-function: var(--ease-in-out);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: via-blur;
+}
+
+::view-transition-group(study-sidebar) {
+  animation: none;
+  z-index: 50;
+}
+::view-transition-old(study-sidebar) {
+  display: none;
+}
+::view-transition-new(study-sidebar) {
+  animation: none;
+}
+
+@keyframes ink-vt-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes ink-vt-slide {
+  from {
+    translate: var(--slide-offset);
+  }
+  to {
+    translate: 0;
+  }
+}
+@keyframes via-blur {
+  30% {
+    filter: blur(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+/* Scroll-driven reveal: blocks rise into place as they enter the viewport (where supported) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-on-scroll {
+      animation: ink-scroll-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+@keyframes ink-scroll-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.98);
+  }
+}
+
+/* Tooltips (components/system/hint.tsx): a small cream block, same outline and type as the app */
+.ink-tooltip {
+  z-index: 60;
+  max-width: 15rem;
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--foreground);
+  padding: 0.35rem 0.6rem;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  transform-origin: var(--radix-tooltip-content-transform-origin);
+}
+.ink-tooltip[data-state="delayed-open"] {
+  animation: ink-tip-in 160ms var(--ease-out);
+}
+.ink-tooltip[data-state="delayed-open"][data-side="top"] { --tip-shift: 4px; }
+.ink-tooltip[data-state="delayed-open"][data-side="bottom"] { --tip-shift: -4px; }
+.ink-tooltip[data-state="closed"] {
+  animation: ink-tip-out 110ms var(--ease-out) forwards;
+}
+.ink-tooltip-arrow {
+  fill: var(--edge);
+}
+@keyframes ink-tip-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--tip-shift, 0)) scale(0.92);
+  }
+}
+@keyframes ink-tip-out {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ink-tooltip[data-state="delayed-open"] {
+    animation-name: ink-fade;
+  }
+  .ink-tooltip[data-state="closed"] {
+    animation: none;
+  }
+}
+
+/* Menus (account menu): a cream block that unfolds from its trigger */
+.ink-menu {
+  z-index: 60;
+  overflow: hidden;
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--foreground);
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin);
+}
+.ink-menu[data-state="open"] {
+  animation: ink-tip-in 180ms var(--ease-out);
+}
+.ink-menu[data-state="closed"] {
+  animation: ink-tip-out 120ms var(--ease-out) forwards;
+}
+.ink-menu-item {
+  cursor: pointer;
+  outline: none;
+  transition: background-color 120ms ease;
+}
+.ink-menu-item[data-highlighted] {
+  background: var(--secondary);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ink-menu[data-state="open"] {
+    animation-name: ink-fade;
+  }
+  .ink-menu[data-state="closed"] {
+    animation: none;
+  }
+}
+
+/* Chips (question grid): small ink blocks; answered = forest, current = lavender */
+.ink-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--edge);
+  border-radius: calc(var(--radius) - 0.125rem);
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 160ms ease,
+    color 160ms ease;
 }
+.ink-chip[data-answered="true"] {
+  background: var(--primary);
+  border-color: var(--primary-edge);
+  color: var(--primary-foreground);
+}
+.ink-chip[aria-current="step"] {
+  background: var(--accent);
+  border-color: var(--edge);
+  color: var(--accent-foreground);
+  transform: translateY(-2px);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ink-chip:hover {
+    transform: translateY(-2px);
+  }
+  .ink-chip:not([data-answered="true"]):not([aria-current="step"]):hover {
+    background: var(--secondary);
+  }
+}
+.ink-chip:active {
+  transform: translateY(1px) scale(0.96);
+}
+.ink-chip-key {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 2px;
+  border: 2px solid var(--edge);
+}
+.ink-chip-key-answered {
+  background: var(--primary);
+  border-color: var(--primary-edge);
+}
+.ink-chip-key-current {
+  background: var(--accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ink-chip,
+  .ink-chip:hover,
+  .ink-chip:active,
+  .ink-chip[aria-current="step"] {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Toggle chip in its "on" state (bookmarks) */
+.ink-chip.ink-chip-on {
+  background: var(--primary);
+  border-color: var(--primary-edge);
+  color: var(--primary-foreground);
+}
+
+/* Sign-in invite strip: the lock gives a little nudge so the strip reads as an offer */
+.invite-lock {
+  animation: ink-invite-nudge 2.8s var(--ease-in-out) 1.2s infinite;
+}
+@keyframes ink-invite-nudge {
+  0%, 82%, 100% { transform: rotate(0); }
+  86% { transform: rotate(-10deg); }
+  90% { transform: rotate(8deg); }
+  94% { transform: rotate(-4deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .invite-lock {
+    animation: none;
+  }
+}
+
+/* Score history bars grow up from the baseline, one after another */
+.score-bar {
+  transform-origin: bottom;
+  animation: ink-bar-grow 420ms var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 40ms + 150ms);
+}
+@keyframes ink-bar-grow {
+  from {
+    transform: scaleY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .score-bar {
+    animation: none;
+  }
+}
+
+/* Switch (filters): an ink-outlined track with a small block thumb. Off = paper, on = forest
+   with its deeper green edge. Unlayered so it overrides the shadcn utility defaults. */
+.ink-switch {
+  width: 2.5rem;
+  height: 1.375rem;
+  padding: 2px;
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  background: var(--background);
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+.ink-switch:is([data-state="checked"], [data-checked]) {
+  background: var(--primary);
+  border-color: var(--primary-edge);
+}
+.ink-switch:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+.ink-switch [data-slot="switch-thumb"] {
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: calc(var(--radius) - 0.2rem);
+  background: var(--edge);
+  translate: 0 0;
+  transition: translate 200ms var(--ease-out), background-color 160ms ease;
+}
+.ink-switch:is([data-state="checked"], [data-checked]) [data-slot="switch-thumb"] {
+  background: var(--primary-foreground);
+  translate: 1.125rem 0;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ink-switch:not([data-state="checked"], [data-checked]):hover {
+    background: var(--secondary);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ink-switch,
+  .ink-switch [data-slot="switch-thumb"] {
+    transition: none;
+  }
+}
+
+/* Toasts (components/system/toaster.tsx): cream ink block, readable ink text, no shadow */
+.ink-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: var(--width, 356px);
+  max-width: calc(100vw - 2rem);
+  padding: 0.85rem 1rem;
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+.ink-toast[data-type="error"] {
+  border-color: var(--destructive);
+}
+.ink-toast-icon {
+  display: flex;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.ink-toast-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.ink-toast-title {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.ink-toast-description {
+  font-size: 14px;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--foreground) 72%, transparent);
+}
+.ink-toast-action {
+  align-self: center;
+  flex-shrink: 0;
+  border: 2px solid var(--primary-edge);
+  border-radius: calc(var(--radius) - 0.125rem);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0.4rem 0.75rem;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ink-toast-action:hover {
+    transform: translateY(-2px);
+  }
+}
+.ink-toast-action:active {
+  transform: translateY(1px) scale(0.97);
+}
+.ink-toast-cancel {
+  align-self: center;
+  border: 2px solid var(--edge);
+  border-radius: calc(var(--radius) - 0.125rem);
+  background: var(--background);
+  padding: 0.4rem 0.75rem;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+}
+
