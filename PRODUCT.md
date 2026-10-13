@@ -20,7 +20,7 @@ The content follows the class's own course outlines and the teacher's notes, top
 
 ## Operating Context
 
-- Exams come in rounds per semester: mid-terms ("Mids") and finals. Current state: Semester 1 (7 subjects, done) whose content mixes mid-term and final material with no record of which topic belonged to which exam, so it is labelled "Mids + Finals"; Semester 2 Mids (Digital Logic Design, chapters 1–2, upcoming).
+- Exams come in rounds per semester: mid-terms ("Mids") and finals. Current state: Semester 1 (7 subjects, done) whose content mixes mid-term and final material with no record of which topic belonged to which exam, so it is labelled "Mids + Finals"; Semester 2 Mids (Digital Logic Design chapters 1–2 and Internet of Things lectures 1–7, upcoming).
 - One semester's exam is "current" at any time. Older semesters stay available as an archive for revision.
 - Three usage modes, all real:
   - phone, short sessions between classes;

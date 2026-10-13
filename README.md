@@ -3,7 +3,7 @@
 Study notes, flashcards, MCQs, fill-in-the-blanks, true/false and timed mock tests for the BSCS program.
 
 - **Semester 1 · Mids + Finals** (whole course; not split by exam): Digital Art, Pakistan Studies, Financial Accounting, Functional English, Applied ICT, Programming Fundamentals, PF Lab
-- **Semester 2 · Mids:** Digital Logic Design (Ch 1 Number Systems & Complements, Ch 2 Boolean Algebra)
+- **Semester 2 · Mids:** Digital Logic Design (Ch 1 Number Systems & Complements, Ch 2 Boolean Algebra) and Internet of Things (Lec 1–7: basics, networks, physical and logical design, OSI, TCP/IP, IoT architecture)
 
 Next.js 16 (App Router, Cache Components) · React 19 · Tailwind CSS v4 · shadcn/ui (Radix) · Supabase (optional Google sign-in). Guests keep everything in `localStorage`; signing in adds sync and the study tracker.
 
